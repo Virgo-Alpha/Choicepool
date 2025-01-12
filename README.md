@@ -1,7 +1,9 @@
 # Choicepool
 
-## Overview  
-The **Choice Randomizer Games** project is a fun, interactive web-based application designed to help users make decisions while playing classic games. This app allows users to input their own options for decisions, which are then matched to the following games:  
+## Overview
+There are two types of decisions. One-way and two way door decisions. This depends on how easy it is to revert the decision. As such, we shouldn't spend too much time on two-way door decisions. This application allows us to randomly pick one option among many in a two-door decision making process. It incorporates games such as coin flips, dice rolling and rock, paper, scissors to make decision making fun and interactive.
+
+The **Choicepool** project is a fun, interactive web-based application designed to help users make decisions while playing classic games. This app allows users to input their own options for decisions, which are then matched to the following games:  
 
 1. **2 Choices**: Coin Flip  
 2. **3 Choices**: Rock, Paper, Scissors  
