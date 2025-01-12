@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Rock, Paper, Scissors</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .choice {
+            margin: 0 20px;
+            font-size: 48px;
+        }
+
+        .user {
+            color: blue;
+        }
+
+        .computer {
+            color: red;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #4CAF50;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul id="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="choice_2.html">2 Choices</a></li>
+                <li><a href="choice_3.html">3 Choices</a></li>
+                <li><a href="choice_4.html">4 Choices</a></li>
+                <li><a href="choice_5.html">5 Choices</a></li>
+                <li><a href="choice_6.html">6 Choices</a></li>
+            </ul>
+        </nav>
+        <h1>Rock, Paper, Scissors</h1>
+    </header>
+
+    <div>
+        <p>Input your own options corresponding to Rock, Paper, and Scissors. Once set, play the game to see your choice and the computer's choice with emojis and your custom options displayed.</p>
+
+        <form id="optionForm">
+            <label for="rockInput">Rock:</label>
+            <input type="text" id="rockInput" placeholder="Rock option" required>
+            <br>
+            <label for="paperInput">Paper:</label>
+            <input type="text" id="paperInput" placeholder="Paper option" required>
+            <br>
+            <label for="scissorsInput">Scissors:</label>
+            <input type="text" id="scissorsInput" placeholder="Scissors option" required>
+            <br>
+            <button type="button" onclick="setOptions()">Set Options</button>
+        </form>
+
+        <div id="gameArea" style="display: none;">
+            <p>Please pick a choice below to play the game!</p>
+            <button onclick="playGame('rock')">✊ (Rock)</button>
+            <button onclick="playGame('paper')">✋ (Paper)</button>
+            <button onclick="playGame('scissors')">✌️ (Scissors)</button>
+
+            <div class="choices">
+                <div class="choice user" id="userDisplay">?</div>
+                <div class="choice computer" id="computerDisplay">?</div>
+            </div>
+
+            <div class="result" id="result"></div>
+        </div>
+    </div>
+
+    <script>
+        let customOptions = {
+            rock: "Rock",
+            paper: "Paper",
+            scissors: "Scissors"
+        };
+
+        function setOptions() {
+            const rockInput = document.getElementById('rockInput').value || "Rock";
+            const paperInput = document.getElementById('paperInput').value || "Paper";
+            const scissorsInput = document.getElementById('scissorsInput').value || "Scissors";
+
+            customOptions = { rock: rockInput, paper: paperInput, scissors: scissorsInput };
+
+            document.getElementById('gameArea').style.display = "block";
+            alert("Options set! You can now play the game.");
+        }
+
+        function playGame(userChoice) {
+            const computerChoices = ['rock', 'paper', 'scissors'];
+            const computerChoice = computerChoices[Math.floor(Math.random() * computerChoices.length)];
+
+            const userDisplay = document.getElementById('userDisplay');
+            const computerDisplay = document.getElementById('computerDisplay');
+            const resultDiv = document.getElementById('result');
+
+            const emojis = { rock: '✊', paper: '✋', scissors: '✌️' };
+
+            // Display choices with custom options
+            userDisplay.innerText = `${emojis[userChoice]} (${customOptions[userChoice]})`;
+            computerDisplay.innerText = `${emojis[computerChoice]} (${customOptions[computerChoice]})`;
+
+            // Determine winner and state the winning option
+            if (userChoice === computerChoice) {
+                resultDiv.innerText = `It's a tie! Both chose ${customOptions[userChoice]}.`;
+            } else if (
+                (userChoice === 'rock' && computerChoice === 'scissors') ||
+                (userChoice === 'paper' && computerChoice === 'rock') ||
+                (userChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                resultDiv.innerText = `You win! ${customOptions[userChoice]} beats ${customOptions[computerChoice]}.`;
+            } else {
+                resultDiv.innerText = `Computer wins! ${customOptions[computerChoice]} beats ${customOptions[userChoice]}.`;
+            }
+        }
+    </script>
+</body>
+</html>

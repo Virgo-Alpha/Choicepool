@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spin the Wheel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+        }
+
+        .wheel-container {
+            margin: 30px auto;
+            width: 500px;
+            height: 500px;
+            position: relative;
+        }
+
+        .outer-wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .inner-wheel {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background-color: white;
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            clip-path: circle(50%);
+            border: 2px solid black;
+            z-index: 1;
+        }
+
+        .wheel-section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background-color: white;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            border:#333 solid 1px;
+            font-size: 18px;
+            font-weight: bold;
+            transform-origin: 100% 100%;
+            z-index: 2;
+            padding: 5px;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 30px;
+            height: 30px;
+            background-color: red;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            transform: translate(-50%, -100%);
+            z-index: 10;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .input-form {
+            margin-top: 20px;
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #4CAF50;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul id="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="choice_2.html">2 Choices</a></li>
+                <li><a href="choice_3.html">3 Choices</a></li>
+                <li><a href="choice_4.html">4 Choices</a></li>
+                <li><a href="choice_5.html">5 Choices</a></li>
+                <li><a href="choice_6.html">6 Choices</a></li>
+            </ul>
+        </nav>
+        <h1>Spin the Wheel</h1>
+    </header>
+
+    <div>
+        <p>Enter your 5 options below and click "Spin the Wheel" to see your pick!</p>
+        
+        <!-- Form to enter options -->
+        <div class="input-form">
+            <input type="text" id="choice1" placeholder="Option 1">
+            <input type="text" id="choice2" placeholder="Option 2">
+            <input type="text" id="choice3" placeholder="Option 3">
+            <input type="text" id="choice4" placeholder="Option 4">
+            <input type="text" id="choice5" placeholder="Option 5">
+        </div>
+
+        <button onclick="spinWheel()">Spin the Wheel</button>
+
+        <!-- Wheel container -->
+        <div class="wheel-container" id="wheel-container" style="display: none;">
+            <div class="outer-wheel"></div>
+            <div class="inner-wheel" id="inner-wheel">
+                <!-- Sections will be inserted dynamically -->
+            </div>
+            <div class="wheel-pointer" id="wheel-pointer"></div>
+        </div>
+
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function spinWheel() {
+            // Get the options from the input fields
+            const choice1 = document.getElementById('choice1').value;
+            const choice2 = document.getElementById('choice2').value;
+            const choice3 = document.getElementById('choice3').value;
+            const choice4 = document.getElementById('choice4').value;
+            const choice5 = document.getElementById('choice5').value;
+
+            // Check if all choices are entered
+            if (!choice1 || !choice2 || !choice3 || !choice4 || !choice5) {
+                alert("Please enter all 5 options.");
+                return;
+            }
+
+            // Show the wheel
+            document.getElementById('wheel-container').style.display = 'block';
+
+            // Options entered by the user
+            const choices = [choice1, choice2, choice3, choice4, choice5];
+            const innerWheel = document.getElementById('inner-wheel');
+            innerWheel.innerHTML = ''; // Clear the wheel
+
+            // Subdivide the inner wheel into 5 sections
+            const anglePerSection = 360 / 5;
+            for (let i = 0; i < 5; i++) {
+                const section = document.createElement('div');
+                section.classList.add('wheel-section');
+                section.style.transform = `rotate(${i * anglePerSection}deg)`;
+                section.innerText = choices[i];
+                innerWheel.appendChild(section);
+            }
+
+            // Draw the lines for subdivision
+            const wheelContainer = document.getElementById('inner-wheel');
+            for (let i = 0; i < 5; i++) {
+                const line = document.createElement('div');
+                line.style.position = 'absolute';
+                line.style.width = '2px';
+                line.style.height = '100%';
+                line.style.backgroundColor = '#000';
+                line.style.transform = `rotate(${i * anglePerSection}deg)`;
+                line.style.transformOrigin = '0 100%';
+                wheelContainer.appendChild(line);
+            }
+
+            // Simulate spinning with a delay
+            const spinAngle = Math.floor(Math.random() * 360); // Randomize the spin angle
+            const totalSpin = spinAngle + 3600; // Add some rotations for the spinning effect
+            innerWheel.style.transition = 'transform 3s ease-out'; // Spin duration
+            innerWheel.style.transform = `rotate(${totalSpin}deg)`; // Apply spin
+
+            // After spinning ends, show the result
+            setTimeout(() => {
+                // Adjust the spin angle to determine the selected section
+                const adjustedSpinAngle = (totalSpin % 360) + anglePerSection / 2;
+                const selectedIndex = Math.floor(adjustedSpinAngle / anglePerSection) % 5;
+                document.getElementById('result').innerText = `The chosen option is: ${choices[selectedIndex]}`;
+            }, 3000); // Wait 3 seconds for the spinning effect to finish
+        }
+    </script>
+</body>
+</html>

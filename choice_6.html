@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realistic Dice Roll with Options</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .dice-container {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dice {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            border-radius: 15px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 5px;
+            position: relative;
+        }
+
+        .dot {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            margin: auto;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container input {
+            margin: 5px 0;
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 10px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #45a049;
+        }
+
+        @media (max-width: 768px) {
+            .navbar ul {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #4CAF50;
+            }
+
+            .navbar ul li {
+                margin: 10px 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul id="menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="choice_2.html">2 Choices</a></li>
+                <li><a href="choice_3.html">3 Choices</a></li>
+                <li><a href="choice_4.html">4 Choices</a></li>
+                <li><a href="choice_5.html">5 Choices</a></li>
+                <li><a href="choice_6.html">6 Choices</a></li>
+            </ul>
+        </nav>
+        <h1>Realistic Dice Roll with Options</h1>
+    </header>
+
+    <div>
+        <p>Enter up to 6 options below, then roll the dice to choose one!</p>
+        <div class="form-container">
+            <input type="text" id="option1" placeholder="Option 1" required>
+            <input type="text" id="option2" placeholder="Option 2" required>
+            <input type="text" id="option3" placeholder="Option 3">
+            <input type="text" id="option4" placeholder="Option 4">
+            <input type="text" id="option5" placeholder="Option 5">
+            <input type="text" id="option6" placeholder="Option 6">
+            <button onclick="rollDice()">Roll Dice</button>
+        </div>
+        <div class="dice-container">
+            <div class="dice" id="dice">
+                <!-- Dice spots will be dynamically added -->
+            </div>
+        </div>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        // Predefined dot positions for dice faces
+        const diceFaces = {
+            1: [4], // Center dot
+            2: [0, 8], // Top-left, Bottom-right
+            3: [0, 4, 8], // Top-left, Center, Bottom-right
+            4: [0, 2, 6, 8], // Four corners
+            5: [0, 2, 4, 6, 8], // Four corners + center
+            6: [0, 2, 3, 5, 6, 8], // Two rows of three dots
+        };
+
+        function rollDice() {
+            const dice = document.getElementById('dice');
+            const resultDiv = document.getElementById('result');
+
+            // Collect user options
+            const options = [];
+            for (let i = 1; i <= 6; i++) {
+                const option = document.getElementById(`option${i}`).value.trim();
+                if (option) options.push(option);
+            }
+
+            // Validate that at least 2 options are provided
+            if (options.length < 2) {
+                resultDiv.innerText = "Please enter at least 2 options.";
+                return;
+            }
+
+            // Function to render dots on the dice
+            function renderDiceFace(number) {
+                dice.innerHTML = ""; // Clear previous dots
+                for (let i = 0; i < 9; i++) {
+                    const dot = document.createElement('div');
+                    dot.classList.add('dot');
+                    if (diceFaces[number].includes(i)) {
+                        dot.style.visibility = "visible";
+                    } else {
+                        dot.style.visibility = "hidden";
+                    }
+                    dice.appendChild(dot);
+                }
+            }
+
+            // Animate the dice rolling
+            let currentRoll = 0;
+            const rollInterval = setInterval(() => {
+                currentRoll = Math.ceil(Math.random() * 6);
+                renderDiceFace(currentRoll);
+            }, 100);
+
+            // Stop the rolling animation after 3 seconds
+            setTimeout(() => {
+                clearInterval(rollInterval);
+                renderDiceFace(currentRoll); // Render final face
+
+                // Display the result based on the number rolled
+                if (currentRoll <= options.length) {
+                    resultDiv.innerText = `Result: ${options[currentRoll - 1]}`;
+                } else {
+                    resultDiv.innerText = "Result: No option assigned to this number.";
+                }
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

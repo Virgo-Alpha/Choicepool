@@ -1,0 +1,6 @@
+- Choice Randomizer
+2: Heads or Tails
+3: Rock, Paper, Scissors
+4: Eeny, Meeny, Miny, Moe
+5: Spin the wheel
+6: Dice roll
